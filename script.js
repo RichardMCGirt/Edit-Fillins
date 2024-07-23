@@ -26,22 +26,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function displayData(records) {
         const tbody = document.getElementById('airtable-data').querySelector('tbody');
+        tbody.innerHTML = ''; // Clear existing data
+
         records.forEach(record => {
             const fields = record.fields;
             const Customer = fields['Customer'] || 'N/A';
-            const feildManager = fields['FeildManager'] || 'N/A';
+            const fieldManager = fields['FeildManager'] || 'N/A';
             const materialsNeeded = fields['Materials Needed'] || 'N/A';
             const status = fields['Status'] || 'N/A';
             const Branch = fields['VanirOffice'] || 'N/A';
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td>${Customer}</td>
-                <td>${feildManager}</td>
+                <td data-id="${record.id}" data-field="Customer">${Customer}</td>
+                <td data-id="${record.id}" data-field="FeildManager">${fieldManager}</td>
                 <td contenteditable="true" data-id="${record.id}" data-field="Materials Needed">${materialsNeeded}</td>
-                <td>${status}</td>
-                <td>${Branch}</td>
+                <td data-id="${record.id}" data-field="Status">${status}</td>
+                <td data-id="${record.id}" data-field="VanirOffice">${Branch}</td>
             `;
+
+            // Add click event to open modal
+            tr.addEventListener('click', () => openModal(fields));
+
             tbody.appendChild(tr);
         });
 
@@ -55,6 +61,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     async function fetchAllData() {
+        document.getElementById('loading-indicator').style.display = 'block';
+        document.getElementById('airtable-data').style.display = 'none';
+        document.getElementById('submit-button').style.display = 'none';
         let allRecords = [];
         let offset = null;
 
@@ -64,7 +73,19 @@ document.addEventListener('DOMContentLoaded', function () {
             offset = data.offset;
         } while (offset);
 
+        // Sort records alphabetically by Branch
+        allRecords.sort((a, b) => {
+            const branchA = (a.fields['VanirOffice'] || '').toLowerCase();
+            const branchB = (b.fields['VanirOffice'] || '').toLowerCase();
+            if (branchA < branchB) return -1;
+            if (branchA > branchB) return 1;
+            return 0;
+        });
+
         displayData(allRecords);
+        document.getElementById('loading-indicator').style.display = 'none';
+        document.getElementById('airtable-data').style.display = 'table';
+        document.getElementById('submit-button').style.display = 'block';
     }
 
     async function updateRecord(id, fields) {
@@ -91,6 +112,10 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
+        document.getElementById('loading-indicator').style.display = 'block';
+        document.getElementById('airtable-data').style.display = 'none';
+        document.getElementById('submit-button').style.display = 'none';
+
         const tbody = document.getElementById('airtable-data').querySelector('tbody');
         const rows = tbody.querySelectorAll('tr');
         for (const row of rows) {
@@ -103,8 +128,49 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
+        document.getElementById('loading-indicator').style.display = 'none';
+        document.getElementById('airtable-data').style.display = 'table';
+        document.getElementById('submit-button').style.display = 'block';
+
         alert('Changes submitted successfully!');
     });
+
+    document.getElementById('search-input').addEventListener('input', function () {
+        const searchValue = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#airtable-data tbody tr');
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            let match = false;
+            cells.forEach(cell => {
+                if (cell.textContent.toLowerCase().includes(searchValue)) {
+                    match = true;
+                }
+            });
+            row.style.display = match ? '' : 'none';
+        });
+    });
+
+    function openModal(fields) {
+        const modal = document.getElementById('modal');
+        const modalContent = document.getElementById('modal-content');
+        modalContent.innerHTML = `
+            <span class="close">&times;</span>
+            <h2>Record Details</h2>
+            <pre>${JSON.stringify(fields, null, 2)}</pre>
+        `;
+        modal.style.display = 'block';
+
+        const closeModal = () => {
+            modal.style.display = 'none';
+        };
+
+        modalContent.querySelector('.close').addEventListener('click', closeModal);
+        window.addEventListener('click', (event) => {
+            if (event.target == modal) {
+                closeModal();
+            }
+        });
+    }
 
     fetchAllData();
 });

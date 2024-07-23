@@ -6,9 +6,34 @@ body {
     padding: 0;
 }
 
+.logo {
+    height: 100px;
+    display: block;
+    margin: 20px auto;
+}
+
 h1 {
     text-align: center;
+    color: #003366; /* Match with the logo's dark blue */
     margin-top: 20px;
+}
+
+#search-input {
+    display: block;
+    margin: 20px auto;
+    padding: 10px;
+    width: 80%;
+    max-width: 500px;
+    border: 1px solid #003366; /* Match with the logo's dark blue */
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#loading-indicator {
+    text-align: center;
+    margin: 20px;
+    font-size: 20px;
+    color: #003366; /* Match with the logo's dark blue */
 }
 
 table {
@@ -26,8 +51,9 @@ th, td {
 }
 
 th {
-    background-color: #007bff;
+    background-color: #cc0000; /* Match with the logo's red */
     color: white;
+    text-align: center;
 }
 
 tr:nth-child(even) {
@@ -39,13 +65,18 @@ tr:hover {
 }
 
 td[contenteditable="true"] {
-
+    background-color: #333;
     cursor: pointer;
+    color: white;
 }
 
 td[contenteditable="true"]:hover {
-    background-color: #070605;
+    background-color: #0c0c0a;
     color: white;
+}
+
+.edited {
+    background-color: #d4edda !important;
 }
 
 button {
@@ -53,7 +84,7 @@ button {
     width: 200px;
     margin: 20px auto;
     padding: 10px;
-    background-color: #007bff;
+    background-color: #003366; /* Match with the logo's dark blue */
     color: white;
     border: none;
     border-radius: 5px;
@@ -62,5 +93,43 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #002244; /* A darker shade of the logo's dark blue */
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 5px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
