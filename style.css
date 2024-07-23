@@ -55,10 +55,18 @@ th, td {
 }
 
 th {
-    background-color: #cc0000; /* Match with the logo's red */
+    background-color: #002244; /* Match with the logo's dark blue */
     color: white;
     text-align: center;
+    white-space: nowrap; /* Prevent wrapping */
+    width: auto; /* Fit to content */
 }
+
+th:nth-child(1) { width: 5%; }
+th:nth-child(2) { width: 5%; }
+th:nth-child(3) { width: 5%; }
+th:nth-child(4) { width: 5%; }
+th:nth-child(5) { width: 5%; }
 
 tr:nth-child(even) {
     background-color: #f2f2f2;
@@ -70,9 +78,10 @@ tr:hover {
 }
 
 td[contenteditable="true"] {
-    background-color: #333;
+    background-color: grey;
     cursor: pointer;
     color: white;
+    width: fit-content;
 }
 
 td[contenteditable="true"]:hover {
