@@ -6,16 +6,20 @@ body {
     padding: 0;
 }
 
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
 .logo {
     height: 100px;
-    display: block;
-    margin: 20px auto;
+    margin-right: 20px;
 }
 
 h1 {
-    text-align: center;
     color: #003366; /* Match with the logo's dark blue */
-    margin-top: 20px;
 }
 
 #search-input {

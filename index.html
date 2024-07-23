@@ -6,15 +6,11 @@
     <title>Airtable Data Display</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<main>
-
-    
-            <img src="VANIR-transparent (1).png" alt="Vanir Installed Sales Logo" class="logo">
-        </div>
-        
-
 <body>
-    <h1>Airtable Data Display</h1>
+    <div class="header">
+        <img src="VANIR-transparent (1).png" alt="Vanir Installed Sales Logo" class="logo">
+        <h1>Airtable Data Display</h1>
+    </div>
     <input type="text" id="search-input" placeholder="Search...">
     <div id="loading-indicator">Loading...</div>
     <table id="airtable-data">
@@ -32,7 +28,13 @@
         </tbody>
     </table>
     <button id="submit-button">Submit Changes</button>
+    
+    <div id="modal" class="modal">
+        <div class="modal-content" id="modal-content">
+            <!-- Modal content will be injected here by JavaScript -->
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
-</main>
 </html>
