@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
         records.forEach(record => {
             const fields = record.fields;
             const Customer = fields['Customer'] || 'N/A';
-            const fieldManager = fields['FieldManager'] || 'N/A';
+            const feildManager = fields['FeildManager'] || 'N/A';
             const materialsNeeded = fields['Materials Needed'] || 'N/A';
             const status = fields['Status'] || 'N/A';
             const Branch = fields['VanirOffice'] || 'N/A';
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${Customer}</td>
-                <td>${fieldManager}</td>
+                <td>${feildManager}</td>
                 <td contenteditable="true" data-id="${record.id}" data-field="Materials Needed">${materialsNeeded}</td>
                 <td>${status}</td>
                 <td>${Branch}</td>
