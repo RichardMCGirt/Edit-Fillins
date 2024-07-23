@@ -29,10 +29,10 @@ document.addEventListener('DOMContentLoaded', function () {
         records.forEach(record => {
             const fields = record.fields;
             const Customer = fields['Customer'] || 'N/A';
-            const fieldManager = fields['FeildManager'] || 'N/A';
+            const fieldManager = fields['FieldManager'] || 'N/A';
             const materialsNeeded = fields['Materials Needed'] || 'N/A';
             const status = fields['Status'] || 'N/A';
-            const Branch = (fields['VanirOffice']) || 'N/A';
+            const Branch = fields['VanirOffice'] || 'N/A';
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
@@ -58,6 +58,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
         displayData(allRecords);
     }
+
+    async function updateRecord(id, fields) {
+        const url = `https://api.airtable.com/v0/${airtableBaseId}/${airtableTableName}/${id}`;
+        const response = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${airtableApiKey}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ fields })
+        });
+        
+        if (!response.ok) {
+            console.error('Error updating data in Airtable:', response.statusText);
+        }
+
+        return response.json();
+    }
+
+    document.getElementById('submit-button').addEventListener('click', async () => {
+        const tbody = document.getElementById('airtable-data').querySelector('tbody');
+        const rows = tbody.querySelectorAll('tr');
+        for (const row of rows) {
+            const materialsNeededCell = row.querySelector('[contenteditable="true"]');
+            const recordId = materialsNeededCell.dataset.id;
+            const newValue = materialsNeededCell.textContent;
+
+            await updateRecord(recordId, { 'Materials Needed': newValue });
+        }
+
+        alert('Changes submitted successfully!');
+    });
 
     fetchAllData();
 });
