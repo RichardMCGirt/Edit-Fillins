@@ -39,14 +39,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td data-id="${record.id}" data-field="Customer">${Customer}</td>
-                <td data-id="${record.id}" data-field="FeildManager">${fieldManager}</td>
+                <td data-id="${record.id}" data-field="FieldManager">${fieldManager}</td>
                 <td contenteditable="true" data-id="${record.id}" data-field="Materials Needed">${materialsNeeded}</td>
                 <td data-id="${record.id}" data-field="Status">${status}</td>
                 <td data-id="${record.id}" data-field="VanirOffice">${Branch}</td>
             `;
-
-            // Add click event to open modal
-            tr.addEventListener('click', () => openModal(fields));
 
             tbody.appendChild(tr);
         });
@@ -149,28 +146,6 @@ document.addEventListener('DOMContentLoaded', function () {
             row.style.display = match ? '' : 'none';
         });
     });
-
-    function openModal(fields) {
-        const modal = document.getElementById('modal');
-        const modalContent = document.getElementById('modal-content');
-        modalContent.innerHTML = `
-            <span class="close">&times;</span>
-            <h2>Record Details</h2>
-            <pre>${JSON.stringify(fields, null, 2)}</pre>
-        `;
-        modal.style.display = 'block';
-
-        const closeModal = () => {
-            modal.style.display = 'none';
-        };
-
-        modalContent.querySelector('.close').addEventListener('click', closeModal);
-        window.addEventListener('click', (event) => {
-            if (event.target == modal) {
-                closeModal();
-            }
-        });
-    }
 
     fetchAllData();
 });

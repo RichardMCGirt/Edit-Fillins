@@ -66,6 +66,7 @@ tr:nth-child(even) {
 
 tr:hover {
     background-color: #e9f7fe;
+    color: #333; /* Ensure text is readable */
 }
 
 td[contenteditable="true"] {
@@ -75,12 +76,12 @@ td[contenteditable="true"] {
 }
 
 td[contenteditable="true"]:hover {
-    background-color: #0c0c0a;
+    background-color: #555;
     color: white;
 }
 
 .edited {
-    background-color: #d4edda !important;
+    background-color: #003366 !important;
 }
 
 button {
@@ -98,30 +99,7 @@ button {
 
 button:hover {
     background-color: #002244; /* A darker shade of the logo's dark blue */
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
-    padding-top: 60px;
-}
-
-.modal-content {
-    background-color: #fefefe;
-    margin: 5% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-    border-radius: 5px;
+    color: white; /* Ensure text is readable */
 }
 
 .close {
