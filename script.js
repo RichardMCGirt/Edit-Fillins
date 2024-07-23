@@ -8,13 +8,13 @@ document.addEventListener('DOMContentLoaded', function () {
         if (offset) {
             url += `&offset=${offset}`;
         }
-        
+
         const response = await fetch(url, {
             headers: {
                 Authorization: `Bearer ${airtableApiKey}`
             }
         });
-        
+
         if (!response.ok) {
             console.error('Error fetching data from Airtable:', response.statusText);
             return { records: [] };
@@ -44,6 +44,14 @@ document.addEventListener('DOMContentLoaded', function () {
             `;
             tbody.appendChild(tr);
         });
+
+        // Add event listeners to editable cells
+        const editableCells = tbody.querySelectorAll('td[contenteditable="true"]');
+        editableCells.forEach(cell => {
+            cell.addEventListener('input', () => {
+                cell.classList.add('edited');
+            });
+        });
     }
 
     async function fetchAllData() {
@@ -69,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify({ fields })
         });
-        
+
         if (!response.ok) {
             console.error('Error updating data in Airtable:', response.statusText);
         }
@@ -78,14 +86,21 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     document.getElementById('submit-button').addEventListener('click', async () => {
+        const confirmSubmit = confirm('Are you sure you want to submit the changes?');
+        if (!confirmSubmit) {
+            return;
+        }
+
         const tbody = document.getElementById('airtable-data').querySelector('tbody');
         const rows = tbody.querySelectorAll('tr');
         for (const row of rows) {
             const materialsNeededCell = row.querySelector('[contenteditable="true"]');
-            const recordId = materialsNeededCell.dataset.id;
-            const newValue = materialsNeededCell.textContent;
-
-            await updateRecord(recordId, { 'Materials Needed': newValue });
+            if (materialsNeededCell.classList.contains('edited')) {
+                const recordId = materialsNeededCell.dataset.id;
+                const newValue = materialsNeededCell.textContent;
+                await updateRecord(recordId, { 'Materials Needed': newValue });
+                materialsNeededCell.classList.remove('edited');
+            }
         }
 
         alert('Changes submitted successfully!');
