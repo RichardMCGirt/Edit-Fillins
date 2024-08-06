@@ -39,12 +39,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
+                <td data-id="${record.id}" data-field="VanirOffice">${Branch}</td>
                 <td data-id="${record.id}" data-field="Customer">${Customer}</td>
+                <td data-id="${record.id}" data-field="Job Name">${Job Name}</td>
                 <td data-id="${record.id}" data-field="FieldManager">${fieldManager}</td>
                 <td contenteditable="true" data-id="${record.id}" data-field="Materials Needed">${materialsNeeded}</td>
                 <td data-id="${record.id}" data-field="Status">${status}</td>
-                <td data-id="${record.id}" data-field="VanirOffice">${Branch}</td>
-                ,td data-id="${record.id}" data-field="Job Name">${Job Name}</td>
+                
             `;
 
             tbody.appendChild(tr);
