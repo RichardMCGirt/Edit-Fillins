@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const materialsNeeded = fields['Materials Needed'] || 'N/A';
             const status = fields['Status'] || 'N/A';
             const Branch = fields['VanirOffice'] || 'N/A';
+            const Job Name = fields['Job Name'] || 'N/A';
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
@@ -43,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td contenteditable="true" data-id="${record.id}" data-field="Materials Needed">${materialsNeeded}</td>
                 <td data-id="${record.id}" data-field="Status">${status}</td>
                 <td data-id="${record.id}" data-field="VanirOffice">${Branch}</td>
+                ,td data-id="${record.id}" data-field="Job Name">${Job Name}</td>
             `;
 
             tbody.appendChild(tr);
