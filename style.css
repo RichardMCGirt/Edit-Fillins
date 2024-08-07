@@ -73,9 +73,16 @@ tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
+tr {
+    position: relative;
+    transition: all 0.3s ease; /* Smooth transition for 3D effect */
+}
+
 tr:hover {
     background-color: #e9f7fe;
     color: #333; /* Ensure text is readable */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for 3D effect */
+    transform: scale(1.02); /* Slightly enlarge row */
 }
 
 td[contenteditable="true"] {
@@ -88,6 +95,8 @@ td[contenteditable="true"] {
 td[contenteditable="true"]:hover {
     background-color: #555;
     color: white;
+    transform: scale(1.02); /* Slightly enlarge cell */
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
 }
 
 .edited {
@@ -105,12 +114,22 @@ button {
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    transition: all 0.3s ease; /* Smooth transition for 3D effect */
 }
 
 button:hover {
     background-color: #002244; /* A darker shade of the logo's dark blue */
     color: white; /* Ensure text is readable */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Add shadow for 3D effect */
+    transform: translateY(-4px); /* Lift button up */
 }
+
+td:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.02); /* Slightly enlarge cell */
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
 
 .close {
     color: #aaa;
