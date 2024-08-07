@@ -30,21 +30,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
         records.forEach(record => {
             const fields = record.fields;
-            const Customer = fields['Customer'] || 'N/A';
+            const jobName = fields['Job Name'] || 'N/A';
+            const customer = fields['Customer'] || 'N/A';
             const fieldManager = fields['FeildManager'] || 'N/A';
             const materialsNeeded = fields['Materials Needed'] || 'N/A';
             const status = fields['Status'] || 'N/A';
-            const Branch = fields['VanirOffice'] || 'N/A';
+            const branch = fields['VanirOffice'] || 'N/A';
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                
-                <td data-id="${record.id}" data-field="Customer">${Customer}</td> 
+                <td data-id="${record.id}" data-field="Job Name">${jobName}</td>
+                <td data-id="${record.id}" data-field="Customer">${customer}</td>
                 <td data-id="${record.id}" data-field="FieldManager">${fieldManager}</td>
                 <td contenteditable="true" data-id="${record.id}" data-field="Materials Needed">${materialsNeeded}</td>
                 <td data-id="${record.id}" data-field="Status">${status}</td>
-                <td data-id="${record.id}" data-field="VanirOffice">${Branch}</td>
-                
+                <td data-id="${record.id}" data-field="VanirOffice">${branch}</td>
             `;
 
             tbody.appendChild(tr);
