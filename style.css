@@ -81,8 +81,6 @@ tr {
 tr:hover {
     background-color: #e9f7fe;
     color: #333; /* Ensure text is readable */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for 3D effect */
-    transform: scale(1.02); /* Slightly enlarge row */
 }
 
 td[contenteditable="true"] {
@@ -121,7 +119,7 @@ button:hover {
     background-color: #002244; /* A darker shade of the logo's dark blue */
     color: white; /* Ensure text is readable */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Add shadow for 3D effect */
-    transform: translateY(-4px); /* Lift button up */
+    transform: translateY(-16px); /* Lift button up */
 }
 
 td:hover {
