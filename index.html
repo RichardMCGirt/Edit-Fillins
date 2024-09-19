@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"> <!-- Prevent manual zoom -->
     <title>Pending Fill Ins</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
-
 </head>
 <body>
     <div class="header">
@@ -15,21 +14,23 @@
     </div>
     <input type="text" id="search-input" placeholder="Search...">
     <div id="loading-indicator">Loading...</div>
-    <table id="airtable-data">
-        <thead>
-            <tr>
-                <th>Job Name</th>
-                <th>Customer</th>
-                <th>Field Manager</th>
-                <th>Materials Needed</th>
-                <th>Status</th>
-                <th>Branch</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Data will be injected here by JavaScript -->
-        </tbody>
-    </table>
+    <div class="table-container">
+        <table id="airtable-data">
+            <thead>
+                <tr>
+                    <th>Job Name</th>
+                    <th>Customer</th>
+                    <th>Field Manager</th>
+                    <th>Materials Needed</th>
+                    <th>Status</th>
+                    <th>Branch</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be injected here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
     <button id="submit-button">Submit Changes</button>
 
     <script src="script.js"></script>
