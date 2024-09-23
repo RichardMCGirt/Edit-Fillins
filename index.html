@@ -14,24 +14,27 @@
     </div>
     <input type="text" id="search-input" placeholder="Search...">
     <div id="loading-indicator">Loading...</div>
+
+    <!-- Scrollable div wrapping the table -->
     <div class="table-container">
-        <table id="airtable-data">
-            <thead>
-                <tr>
-                    <th>Job Name</th>
-                    <th>Customer</th>
-                    <th>Field Manager</th>
-                    <th>Materials Needed</th>
-                    <th>Status</th>
-                    <th>Branch</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Data will be injected here by JavaScript -->
-            </tbody>
-        </table>
+        <div class="table-scrollable">
+            <table id="airtable-data">
+                <thead>
+                    <tr>
+                        <th>Job Name</th>
+                        <th>Customer</th>
+                        <th>Field Manager</th>
+                        <th>Materials Needed</th>
+                        <th>Branch</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be injected here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
     </div>
-    <button id="submit-button">Submit Changes</button>
+
 
     <script src="script.js"></script>
 </body>

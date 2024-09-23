@@ -1,10 +1,13 @@
+/* General styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f9;
     color: #333;
     margin: 0;
     padding: 0;
+    overflow-y: auto; /* Allow vertical scroll */
 }
+
 
 .header {
     display: flex;
@@ -29,7 +32,7 @@ h1 {
     display: block;
     margin: 20px auto;
     padding: 12px;
-    width: 40%;
+    width: 80%;
     max-width: 500px;
     border: 1px solid #003366;
     border-radius: 5px;
@@ -44,25 +47,33 @@ h1 {
 }
 
 .table-container {
+    display: flex;
+    justify-content: center;
     width: 100%;
-    padding: 0 20px; /* Add padding around the container */
-    overflow-x: auto;
+    overflow: hidden; /* Ensure no extra scrolling in this container */
+}
+
+/* The div that wraps the table and allows scrolling */
+.table-scrollable {
+    width: 98%;
+    overflow-x: auto; /* Enable horizontal scrolling if necessary */
+    max-height: 700px; /* Limit vertical height for table scrolling */
+    overflow-y: auto; /* Enable vertical scrolling inside the table */
+    margin: 20px 0; /* Add margin around the scrollable div */
 }
 
 table {
     width: 100%;
-    margin: 20px auto; /* Add margin around the table */
     border-collapse: collapse;
     background-color: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    min-width: 800px; /* Ensures table won't shrink too much */
 }
 
 th, td {
     border: 1px solid #ddd;
     padding: 12px;
     text-align: center;
-    white-space: nowrap;
+    white-space: nowrap; /* Prevent text wrapping */
 }
 
 th {
@@ -101,66 +112,143 @@ button:hover {
     background-color: #002244;
 }
 
-/* Landscape Mode for mobile */
-@media only screen and (max-device-width: 768px) and (orientation: landscape) {
-    .table-container {
-        padding: 0 20px; /* Add margin in landscape mode to prevent edge-to-edge display */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+    opacity: 0.9;
+    z-index: 1000;
+    font-size: 16px;
+}
+
+
+
+/* Mobile Friendly - Small screen sizes (portrait mode) */
+@media only screen and (max-width: 600px) {
+    h1 {
+        font-size: 1.4rem;
     }
-    
-    table {
+
+    .logo {
+        height: 60px;
+        margin-right: 10px;
+    }
+
+    #search-input {
         width: 90%;
-        min-width: 90%; /* Force table to fit in the screen width */
+        padding: 10px;
+    }
+
+    .table-container {
+        padding: 0 10px; /* Add small padding around the container */
+        margin: 10px; /* Add margin to ensure the table doesn’t touch the screen edges */
+        overflow-x: scroll; /* Allow horizontal scrolling */
+        -webkit-overflow-scrolling: touch; /* Enable smooth scrolling for iOS */
+    }
+
+    .table-scrollable {
+        max-height: 300px; /* Limit the vertical height for better scrolling on mobile */
+        overflow-y: auto; /* Allow vertical scrolling inside the scrollable div */
+        margin: 20px 0; /* Add margin around the scrollable div */
+        overflow-x: scroll; /* Allow horizontal scrolling */
+
+    }
+
+    table {
+        display: block;
+        width: 95%;
+        min-width: 600px; /* Set a minimum width for better scrolling */
+        border: 0;
+        margin: 10px 0; /* Ensure there's space above and below the table */
+    }
+
+    thead {
+        display: none; /* Hide the table headers */
+    }
+
+    tbody, tr, td {
+        display: block;
+        width: 100%;
+    }
+
+    tr {
+        margin-bottom: 15px;
+        border-bottom: 2px solid #ddd;
+    }
+
+    td {
+        text-align: left;
+        padding: 10px;
+        border: 0;
+        position: relative;
+        font-size: 0.9rem;
+    }
+
+    td::before {
+        content: attr(data-field); /* Use data attributes for labels */
+        font-weight: bold;
+        color: #003366;
+        margin-right: 10px;
+    }
+}
+
+/* Tablet and Landscape Mode */
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    .logo {
+        height: 70px;
+    }
+
+    #search-input {
+        width: 70%;
+        padding: 12px;
+    }
+
+    .table-container {
+        padding: 0 20px; /* Add padding around the table container */
+        margin: 0 auto;
+    }
+
+    table {
+        width: 95%;
+        min-width: 600px;
+        margin: 20px auto; /* Add more margin around the table */
+        border-collapse: collapse;
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a slight shadow to give spacing */
     }
 
     th, td {
-        font-size: 0.9rem; /* Slightly smaller font for better visibility */
-        padding: 8px;
+        font-size: 0.95rem;
+        padding: 15px; /* Add padding inside table cells for better readability */
+        text-align: center; /* Center text */
+        white-space: nowrap; /* Prevent text from wrapping */
+        overflow: hidden; /* Ensure text doesn’t overflow */
+        text-overflow: ellipsis; /* If text is too long, add an ellipsis (...) */
+    }
+
+    th {
+        background-color: #002244;
+        color: white;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    td {
+        white-space: nowrap; /* Prevent text from breaking into new lines */
     }
 
     button {
         width: 80%;
-        padding: 10px;
-        font-size: 0.9rem;
-    }
-
-    h1 {
-        font-size: 1.5rem;
-    }
-
-    .logo {
-        height: 60px; /* Reduce logo size in landscape mode */
-    }
-}
-
-@media (max-width: 600px) {
-    h1 {
-        font-size: 1.5rem;
-    }
-    
-    #search-input {
-        width: 60%;
-        padding: 10px;
-        font-size: 0.9rem;
-    }
-
-    .table-container {
-        padding: 0 15px; /* Add padding around the table on smaller screens */
-    }
-
-    table {
-        width: 100%;
-        min-width: 100%;
-        margin: 0 auto;
-    }
-
-    th, td {
-        padding: 8px;
-        font-size: 0.9rem;
-    }
-
-    button {
-        width: 90%;
-        padding: 10px;
-        font-size: 0.9rem;
+        padding: 12px;
+        margin: 10px auto;
     }
 }

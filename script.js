@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const customer = fields['Customer'] || 'N/A';
             const fieldManager = fields['FeildManager'] || 'N/A';
             const materialsNeeded = fields['Materials Needed'] || 'N/A';
-            const status = fields['Status'] || 'N/A';
             const branch = fields['VanirOffice'] || 'N/A';
 
             const tr = document.createElement('tr');
@@ -43,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td data-id="${record.id}" data-field="Customer">${customer}</td>
                 <td data-id="${record.id}" data-field="FieldManager">${fieldManager}</td>
                 <td contenteditable="true" data-id="${record.id}" data-field="Materials Needed">${materialsNeeded}</td>
-                <td data-id="${record.id}" data-field="Status">${status}</td>
                 <td data-id="${record.id}" data-field="VanirOffice">${branch}</td>
             `;
 
@@ -53,6 +51,16 @@ document.addEventListener('DOMContentLoaded', function () {
         // Add event listeners to editable cells
         const editableCells = tbody.querySelectorAll('td[contenteditable="true"]');
         editableCells.forEach(cell => {
+            cell.addEventListener('blur', async () => {
+                if (cell.classList.contains('edited')) {
+                    const recordId = cell.dataset.id;
+                    const newValue = cell.textContent;
+                    await updateRecord(recordId, { 'Materials Needed': newValue });
+                    cell.classList.remove('edited');
+                    showToast('Changes submitted successfully!');
+                }
+            });
+
             cell.addEventListener('input', () => {
                 cell.classList.add('edited');
             });
@@ -62,7 +70,6 @@ document.addEventListener('DOMContentLoaded', function () {
     async function fetchAllData() {
         document.getElementById('loading-indicator').style.display = 'block';
         document.getElementById('airtable-data').style.display = 'none';
-        document.getElementById('submit-button').style.display = 'none';
         let allRecords = [];
         let offset = null;
 
@@ -84,7 +91,6 @@ document.addEventListener('DOMContentLoaded', function () {
         displayData(allRecords);
         document.getElementById('loading-indicator').style.display = 'none';
         document.getElementById('airtable-data').style.display = 'table';
-        document.getElementById('submit-button').style.display = 'block';
     }
 
     async function updateRecord(id, fields) {
@@ -105,49 +111,16 @@ document.addEventListener('DOMContentLoaded', function () {
         return response.json();
     }
 
-    document.getElementById('submit-button').addEventListener('click', async () => {
-        const confirmSubmit = confirm('Are you sure you want to submit the changes?');
-        if (!confirmSubmit) {
-            return;
-        }
+    function showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+        document.body.appendChild(toast);
 
-        document.getElementById('loading-indicator').style.display = 'block';
-        document.getElementById('airtable-data').style.display = 'none';
-        document.getElementById('submit-button').style.display = 'none';
-
-        const tbody = document.getElementById('airtable-data').querySelector('tbody');
-        const rows = tbody.querySelectorAll('tr');
-        for (const row of rows) {
-            const materialsNeededCell = row.querySelector('[contenteditable="true"]');
-            if (materialsNeededCell.classList.contains('edited')) {
-                const recordId = materialsNeededCell.dataset.id;
-                const newValue = materialsNeededCell.textContent;
-                await updateRecord(recordId, { 'Materials Needed': newValue });
-                materialsNeededCell.classList.remove('edited');
-            }
-        }
-
-        document.getElementById('loading-indicator').style.display = 'none';
-        document.getElementById('airtable-data').style.display = 'table';
-        document.getElementById('submit-button').style.display = 'block';
-
-        alert('Changes submitted successfully!');
-    });
-
-    document.getElementById('search-input').addEventListener('input', function () {
-        const searchValue = this.value.toLowerCase();
-        const rows = document.querySelectorAll('#airtable-data tbody tr');
-        rows.forEach(row => {
-            const cells = row.querySelectorAll('td');
-            let match = false;
-            cells.forEach(cell => {
-                if (cell.textContent.toLowerCase().includes(searchValue)) {
-                    match = true;
-                }
-            });
-            row.style.display = match ? '' : 'none';
-        });
-    });
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
 
     fetchAllData();
 });
