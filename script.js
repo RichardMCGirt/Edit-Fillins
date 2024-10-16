@@ -30,9 +30,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         records.forEach(record => {
             const fields = record.fields;
+
             const jobName = fields['Job Name'] || 'N/A';
             const customer = fields['Customer'] || 'N/A';
-            const fieldManager = fields['FeildManager'] || 'N/A';
+            const fieldManager = fields['Field-Manager'] || 'N/A';
             const materialsNeeded = fields['Materials Needed'] || 'N/A';
             const branch = fields['VanirOffice'] || 'N/A';
 
