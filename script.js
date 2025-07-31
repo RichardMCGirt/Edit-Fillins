@@ -24,50 +24,59 @@ document.addEventListener('DOMContentLoaded', function () {
         return data;
     }
 
-    function displayData(records) {
-        const tbody = document.getElementById('airtable-data').querySelector('tbody');
-        tbody.innerHTML = ''; // Clear existing data
+  function displayData(records) {
+    const container = document.getElementById('airtable-data');
+    container.innerHTML = ''; // Clear old content
 
-        records.forEach(record => {
-            const fields = record.fields;
+    records.forEach(record => {
+        const fields = record.fields;
+        const jobName = fields['Job Name'] || 'N/A';
+        const customer = fields['Customer'] || 'N/A';
+        const fieldManager = fields['Field-Manager'] || 'N/A';
+        const materialsNeeded = fields['Materials Needed'] || 'N/A';
+        const branch = fields['VanirOffice'] || 'N/A';
 
-            const jobName = fields['Job Name'] || 'N/A';
-            const customer = fields['Customer'] || 'N/A';
-            const fieldManager = fields['Field-Manager'] || 'N/A';
-            const materialsNeeded = fields['Materials Needed'] || 'N/A';
-            const branch = fields['VanirOffice'] || 'N/A';
+        // Build card UI
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+            <strong>${jobName}</strong>
+            <small><b>Branch:</b> ${branch}</small>
+            <small><b>Builder:</b> ${customer}</small>
+            <small><b>Field Manager:</b> ${fieldManager}</small>
+            <div class="editable" contenteditable="true" 
+                 data-id="${record.id}" data-field="Materials Needed">${materialsNeeded}</div>
+        `;
 
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-            <td data-id="${record.id}" data-field="VanirOffice">${branch}</td>
+        container.appendChild(card);
+    });
 
-                <td data-id="${record.id}" data-field="Job Name">${jobName}</td>
-                <td data-id="${record.id}" data-field="Customer">${customer}</td>
-                <td data-id="${record.id}" data-field="FieldManager">${fieldManager}</td>
-                <td contenteditable="true" data-id="${record.id}" data-field="Materials Needed">${materialsNeeded}</td>
-            `;
-
-            tbody.appendChild(tr);
-        });
-
-        // Add event listeners to editable cells
-        const editableCells = tbody.querySelectorAll('td[contenteditable="true"]');
-        editableCells.forEach(cell => {
-            cell.addEventListener('blur', async () => {
-                if (cell.classList.contains('edited')) {
-                    const recordId = cell.dataset.id;
-                    const newValue = cell.textContent;
-                    await updateRecord(recordId, { 'Materials Needed': newValue });
-                    cell.classList.remove('edited');
-                    showToast('Changes submitted successfully!');
-                }
-            });
-
-            cell.addEventListener('input', () => {
-                cell.classList.add('edited');
-            });
-        });
+    // ✅ Handle inline editing with debounce (auto-save)
+    function debounce(func, delay) {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func(...args), delay);
+        };
     }
+
+    container.querySelectorAll('.editable').forEach(cell => {
+        const recordId = cell.dataset.id;
+        const fieldName = cell.dataset.field;
+
+        const saveEdit = debounce(async (el) => {
+            const newValue = el.textContent.trim();
+            await updateRecord(recordId, { [fieldName]: newValue });
+            showToast('Changes saved!');
+        }, 1000); // wait 1s after typing stops
+
+        cell.addEventListener('input', () => {
+            saveEdit(cell);
+        });
+    });
+}
+
+
 
     async function fetchAllData() {
         document.getElementById('loading-indicator').style.display = 'block';
@@ -126,3 +135,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     fetchAllData();
 });
+// Add after displayData() or inside DOMContentLoaded
+document.getElementById('search-input').addEventListener('input', function () {
+    const searchTerm = this.value.toLowerCase();
+    const cards = document.querySelectorAll('#airtable-data .card');
+
+    cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(searchTerm) ? 'block' : 'none';
+    });
+});
+
