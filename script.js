@@ -76,8 +76,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 }
 
-
-
     async function fetchAllData() {
         document.getElementById('loading-indicator').style.display = 'block';
         document.getElementById('airtable-data').style.display = 'none';
